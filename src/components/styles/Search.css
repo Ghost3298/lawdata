@@ -1,0 +1,30 @@
+.SearchArea {
+    display: flex;
+    width: 50%;
+    margin: 0 auto;
+}
+
+.SearchAreaChild {
+    width: 50%;
+    padding: 5px;
+    box-sizing: border-box;
+    height: 30px;
+    border: none;
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 4px 5px -1px, rgba(0, 0, 0, 0.3) 0px 3px 3px -1px, rgba(0, 0, 0, 0.2) 0px -2px 3px -1px;
+}
+
+.SearchAreaChild:focus{
+    outline: none;
+}
+
+@media screen and (max-width: 767px) {
+    .SearchArea {
+        width: 90%;
+    }
+}
+
+.highlight {
+    background-color: yellow;
+    font-weight: bold;
+}
+

@@ -1,0 +1,46 @@
+.MyNavBar {
+    background-color: #2a2a2a;
+    width: 50%;
+    height: 35px;
+    margin: 50px auto;
+    padding: 10px;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    gap: 10px;
+    border-radius: 55px;
+    border: 1px solid rgba(255,255,255,0.5);
+}
+
+.MyNavBar ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    justify-content: space-evenly;
+    width: 100%;
+}
+
+.MyNavBar ul li {
+    flex-grow: 1;
+    text-align: center;
+}
+
+.MyNavBar ul li a {
+    color: #ffffff;
+    text-decoration: none;
+}
+
+.MyNavBar ul li a:hover {
+    color: #03DAC6;
+}
+
+@media screen and (max-width: 767px) {
+    .MyNavBar{
+        width: 90%
+    }
+
+    .MyNavBar ul li a {
+        font-size: 16px;
+    }
+}
