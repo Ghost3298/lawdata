@@ -1,4 +1,8 @@
 <?php
+// Enable error reporting
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+
 include 'conn.php'; 
 
 header('Content-Type: application/json'); // Set the content type to JSON
@@ -27,19 +31,28 @@ if ($search_term) {
 
 $query .= " ORDER BY content_text";
 
-// Prepare and execute the statement
+// Prepare the statement
 $stmt = $conn->prepare($query);
-
-if ($cat_id && $search_term) {
-    $search_param = "%" . $search_term . "%"; // For LIKE clause
-    $stmt->bind_param('is', $cat_id, $search_param);
-} elseif ($cat_id) {
-    $stmt->bind_param('i', $cat_id);
-} elseif ($search_term) {
-    $search_param = "%" . $search_term . "%"; // For LIKE clause
-    $stmt->bind_param('s', $search_param);
+if (!$stmt) {
+    die(json_encode(['error' => 'Preparation failed: ' . $conn->error]));
 }
 
+// Bind parameters dynamically
+$param_types = '';
+$params = [];
+if ($cat_id) {
+    $param_types .= 'i'; // Integer type
+    $params[] = $cat_id;
+}
+if ($search_term) {
+    $param_types .= 's'; // String type
+    $search_param = "%" . $search_term . "%"; // For LIKE clause
+    $params[] = $search_param;
+}
+
+$stmt->bind_param($param_types, ...$params);
+
+// Execute the statement
 $stmt->execute();
 
 // Get the result
@@ -47,7 +60,11 @@ $result = $stmt->get_result();
 $contents = $result->fetch_all(MYSQLI_ASSOC);
 
 // Return the contents as JSON
-echo json_encode($contents);
+if (empty($contents)) {
+    echo json_encode(['message' => 'No content found.']);
+} else {
+    echo json_encode($contents);
+}
 
 // Close the statement and connection
 $stmt->close();

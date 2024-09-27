@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import './styles/Categories.css';
 import Modal from 'react-modal'; // Ensure this is installed
 
-const BASE_URL = 'http://localhost/lawdata/public/php'; // Base URL constant
+const BASE_URL = 'http://lawdata.rf.gd'; // Base URL constant
 
 const Categories = () => {
     const [categories, setCategories] = useState([]);
