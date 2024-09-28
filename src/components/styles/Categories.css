@@ -39,6 +39,20 @@
     border: 1px solid #000000;
     border-radius: 18px;
 }
+.CatDisplayArea tr {
+    position: relative; /* Necessary for positioning the pseudo-element */
+    height: 35px;
+}
+
+.CatDisplayArea tr:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 1px; /* Height of the gradient line */
+    background: linear-gradient(to right, transparent, rgba(128, 128, 128, 0.449), transparent);
+}
 
 .CatDisplayArea td{
     height: 35px;

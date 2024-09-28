@@ -28,3 +28,15 @@
     font-weight: bold;
 }
 
+.ModalView select, .ModalView textarea, .ModalView input{
+    width: 250px;
+    padding: 5px;
+    height: 35px;
+    box-sizing: border-box;
+}
+
+.ModalView textarea{
+    padding: 5px;
+    height: 200px;
+    resize: none;
+}

@@ -83,14 +83,22 @@ const Search = () => {
     };
 
     const handleUpdateContent = async (contentData) => {
-        const formData = new FormData();
-        formData.append('id', contentData.id);
-        formData.append('cat_id', contentData.cat_id);
-        formData.append('content_text', contentData.content_text);
-        if (contentData.document) {
-            formData.append('document', contentData.document); // Append file if exists
+        // Basic validation
+        if (!contentData.cat_id_fk || !contentData.content_text) {
+            setError("Please select a category and enter content text.");
+            return;
         }
     
+        setLoading(true);
+        const formData = new FormData();
+        formData.append('id', contentData.id);
+        formData.append('cat_id_fk', contentData.cat_id_fk);
+        formData.append('content_text', contentData.content_text);
+        
+        if (newDocument) {
+            formData.append('document', newDocument); // Append new file if exists
+        }
+        
         try {
             const response = await fetch(`${BASE_URL}/edit_content.php`, {
                 method: 'POST',
@@ -100,17 +108,23 @@ const Search = () => {
             const result = await response.json();
             if (result.success) {
                 console.log('Content updated successfully');
+                fetchContents(); // Refresh contents after update
             } else {
                 console.error('Error updating content:', result.message);
+                setError(result.message); // Set error message if update fails
             }
         } catch (error) {
             console.error('Failed to fetch:', error);
+            setError("Failed to update content");
+        } finally {
+            setLoading(false);
+            handleCloseEditModal(); // Close modal after processing
         }
     };
     
 
     const handleDeleteContent = async (id) => {
-        if (!window.confirm("Are you sure you want to delete this content?")) return; // Confirmation dialog
+        if (!window.confirm("Are you sure you want to delete this content?")) return;
         setLoading(true);
         try {
             const response = await fetch(`${BASE_URL}/delete_content.php`, {
@@ -118,14 +132,14 @@ const Search = () => {
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ id }),
+                body: JSON.stringify({ id }), // Correctly pass the id
             });
     
             const data = await response.json();
             if (data.message === "Content deleted successfully.") {
-                fetchContents(); // Refresh the contents
-                setError(''); // Clear any previous errors
-                handleCloseEditModal(); // Close the edit modal after deletion
+                fetchContents();
+                setError('');
+                handleCloseEditModal();
             } else {
                 setError(data.message);
             }
@@ -136,7 +150,6 @@ const Search = () => {
             setLoading(false);
         }
     };
-       
 
     const handleContentClick = (content) => {
         setCurrentDocument(content.document); // Set the document related to the content
@@ -194,6 +207,11 @@ const Search = () => {
                                         </svg>
                                     </button>
                                 </td>
+                                <td>
+                                    <button onClick={() => handleDeleteContent(content.id)}>
+                                        Delete
+                                    </button>
+                                </td>
                             </tr>
                         ))
                     ) : (
@@ -210,61 +228,38 @@ const Search = () => {
                         handleUpdateContent(currentContent); // Call update function with the currentContent
                     }}>
                         <select
-                        // Set the current selected value
-                            onChange={(e) => setCurrentContent({ ...currentContent, cat_id: e.target.value })} // Update the state on change
+                            value={currentContent.cat_id_fk} // Set the correct value
+                            onChange={(e) => setCurrentContent({ ...currentContent, cat_id_fk: e.target.value })} // Update category
                         >
-                            {/* Display the currently selected category as the first option */}
-                            <option key={currentContent.cat_id_fk} value={currentContent.cat_id_fk}>
-    {
-        categories.find(cat => cat.id === currentContent.cat_id_fk)
-            ? categories.find(cat => cat.id === currentContent.cat_id_fk).cat_name
-            : "Select a category" // Fallback if no match is found
-    }
-</option>
-
-                            
-                            {/* Map through categories and display them as options */}
-                            {categories.map(cat => (
+                            {categories.map((cat) => (
                                 <option key={cat.id} value={cat.id}>{cat.cat_name}</option>
                             ))}
                         </select>
-
-
-
                         <textarea
-                            value={currentContent.content_text || ""}
-                            onChange={(e) => setCurrentContent({ ...currentContent, content_text: e.target.value })}
+                            value={currentContent.content_text}
+                            onChange={(e) => setCurrentContent({ ...currentContent, content_text: e.target.value })} // Update content text
                         />
-
-                        <label>
-                            <span>تغيير المستند:</span>
-                            <input 
-                                type="file" 
-                                onChange={(e) => setNewDocument(e.target.files[0])} 
-                            />
-                        </label>
-                        
+                        <input
+                            type="file"
+                            onChange={(e) => setNewDocument(e.target.files[0])} // Set new document file
+                        />
+                        {currentDocument && (
+                            <p>Document: {currentDocument}</p> // Display current document name
+                        )}
                         <button type="submit">Update</button>
-                        <button type="button" onClick={() => handleDeleteContent(currentContent.id)}>Delete</button>
-                        <button type="button" onClick={handleCloseEditModal}>Cancel</button>
+                        <button onClick={handleCloseEditModal}>Cancel</button>
                     </form>
                 )}
-                {error && <p className="error-message">{error}</p>}
+                
+
             </Modal>
 
-
-            {/* Modal for displaying the document */}
             <Modal isOpen={isDocumentModalOpen} onRequestClose={handleCloseDocumentModal} ariaHideApp={false}>
-                <h2>عرض المستند</h2>
+                <h2>عرض الوثيقة</h2>
                 {currentDocument ? (
-                    <iframe
-                        src={`${BASE_URL}/uploads/${currentDocument}`}
-                        width="100%"
-                        height="600px"
-                        title="Document Preview"
-                    />
+                    <iframe src={`${BASE_URL}/uploads/${currentDocument}`} title="Document" width="100%" height="600px"></iframe>
                 ) : (
-                    <p>لا يوجد مستند للعرض.</p>
+                    <p>No document available</p>
                 )}
                 <button onClick={handleCloseDocumentModal}>إغلاق</button>
             </Modal>
