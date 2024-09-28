@@ -1,5 +1,10 @@
 <?php
-$host = '127.20.10.2';
+
+header("Access-Control-Allow-Origin: *");
+header("Access-Control-Allow-Methods: GET, POST, OPTIONS"); 
+header("Access-Control-Allow-Headers: Content-Type"); 
+
+$host = 'localhost';
 $db = 'lawdata'; 
 $user = 'root'; 
 $pass = ''; 
@@ -11,8 +16,6 @@ if ($conn->connect_error) {
 }
 
 
-header("Access-Control-Allow-Origin: http://localhost:3000");
-header("Access-Control-Allow-Methods: GET, POST, OPTIONS"); 
-header("Access-Control-Allow-Headers: Content-Type"); 
+
 
 ?>

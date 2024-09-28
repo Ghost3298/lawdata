@@ -156,6 +156,7 @@ const Search = () => {
                     style={{ borderRadius: '0px 20px 20px 0px', textAlign: 'center', fontWeight: 'bold' }} 
                     value={selectedCategory}
                     onChange={handleCategoryChange}
+                    id="searchCat"
                 >
                     <option value="">الموضوع</option>
                     {categories.map((cat) => (
@@ -170,6 +171,7 @@ const Search = () => {
                     style={{ borderRadius: '20px 0px 0px 20px' }} 
                     value={searchTerm}
                     onChange={handleSearchChange}
+                    id="searchText"
                 />
             </div>
 

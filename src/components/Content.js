@@ -67,6 +67,7 @@ const Content = () => {
                     style={{ borderRadius: '20px', textAlign: 'center', fontWeight: 'bold' }} 
                     value={selectedCategory}
                     onChange={(e) => setSelectedCategory(e.target.value)}
+                    id="mainCat"
                 >
                     <option value="">الموضوع</option>
                     {categories.map((cat) => (
@@ -75,6 +76,7 @@ const Content = () => {
                 </select>
 
                 <textarea 
+                    id="mainContent"
                     className="contentAreaChild"
                     value={contentText} // Bind textarea value to state
                     onChange={(e) => setContentText(e.target.value)} // Update state on change

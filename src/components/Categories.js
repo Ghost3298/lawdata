@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import './styles/Categories.css';
 import Modal from 'react-modal'; // Ensure this is installed
 
-const BASE_URL = 'http://localhost/lawdata/public/php'; // Base URL constant
+const BASE_URL = 'http://localhost/lawdata/public/php';
 
 const Categories = () => {
     const [categories, setCategories] = useState([]);
@@ -134,6 +134,7 @@ const Categories = () => {
                     placeholder="الموضوع..." 
                     required  
                     style={{ borderRadius: '0px 20px 20px 0px' }}
+                    id="cat"
                 />
                 <button type="submit" style={{ borderRadius: '20px 0px 0px 20px' }}>حفظ</button>
             </form>
