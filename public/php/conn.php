@@ -6,10 +6,10 @@ header("Access-Control-Allow-Origin: *");
 header("Access-Control-Allow-Methods: GET, POST, OPTIONS");
 header("Access-Control-Allow-Headers: Content-Type");
 
-$host = 'localhost';
-$db = 'lawdata'; 
-$user = 'root'; 
-$pass = ''; 
+$host = 'sql308.infinityfree.com';
+$db = 'if0_37397223_lawdata'; 
+$user = 'if0_37397223'; 
+$pass = 'seAe0kdOF7JHa3'; 
 
 $conn = new mysqli($host, $user, $pass, $db);
 

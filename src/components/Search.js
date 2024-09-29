@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import './styles/Search.css';
 import Modal from 'react-modal'; // Ensure this is installed
 
-const BASE_URL = 'http://localhost/lawdata/public/php';
+const BASE_URL = './php';
 
 const Search = () => {
     const [categories, setCategories] = useState([]);

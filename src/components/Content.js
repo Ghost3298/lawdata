@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import './styles/Content.css';
 
-const BASE_URL = 'http://localhost/lawdata/public/php'; // Base URL for your API
+const BASE_URL = './php'; // Base URL for your API
 
 const Content = () => {
     const [categories, setCategories] = useState([]);
